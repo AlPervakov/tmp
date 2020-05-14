@@ -1,0 +1,35 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: atlassian-bamboo
+  name: atlassian-bamboo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlassian-bamboo
+  template:
+    metadata:
+      labels:
+        app: atlassian-bamboo
+    spec:
+      containers:
+        - name: bamboo
+          image: atlassian/bamboo-server:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: bamboo-workdir
+            mountPath: /var/atlassian/application-data/bamboo
+          ports:
+          - containerPort: 8085
+            name: http
+            protocol: TCP
+          - containerPort: 54663
+            name: ssh
+            protocol: TCP
+      volumes:
+        - name: bamboo-workdir
+          gcePersistentDisk:
+            pdName: mk-raif-disk
+            fsType: ext4
