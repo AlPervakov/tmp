@@ -30,6 +30,5 @@ spec:
             protocol: TCP
       volumes:
         - name: bamboo-workdir
-          gcePersistentDisk:
-            pdName: mk-raif-disk
-            fsType: ext4
+          persistentVolumeClaim:
+            claimName: bamboo-pvc
