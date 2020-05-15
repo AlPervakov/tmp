@@ -16,6 +16,12 @@ spec:
         app: atlassian-bamboo
     spec:
       containers:
+        - name: volume-mount-hack
+          image: busybox
+          command: ["sh", "-c", "chown -R 1000:1000 /var/atlassian/application-data/bamboo"]
+          volumeMounts:
+          - name: bamboo-workdir
+            mountPath: /var/atlassian/application-data/bamboo
         - name: bamboo
           image: atlassian/bamboo-server:latest
           imagePullPolicy: Always
