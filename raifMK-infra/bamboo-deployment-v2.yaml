@@ -1,0 +1,55 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: atlassian-bamboo
+  name: atlassian-bamboo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlassian-bamboo
+  template:
+    metadata:
+      labels:
+        app: atlassian-bamboo
+    spec:
+      containers:
+        - name: bamboo
+          image: atlassian/bamboo-server:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: bamboo-workdir
+            mountPath: /var/atlassian/application-data/bamboo
+          ports:
+          - containerPort: 8085
+            name: http
+            protocol: TCP
+          - containerPort: 54663
+            name: ssh
+            protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 6
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+      volumes:
+        - name: bamboo-workdir
+          persistentVolumeClaim:
+            claimName: bamboo-pvc
