@@ -19,7 +19,7 @@ gcloud compute disks create --size=25GB --zone=us-central1-a mk-raif-disk
 Запихать все это в кластер:
 
 ```
-kubectl apply -f mk-raif-volume.yml #не треюуется
+~~kubectl apply -f mk-raif-volume.yml~~ #не треюуется
 
 kubectl create -f bamboo-deployment.yaml
 
