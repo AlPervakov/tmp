@@ -47,7 +47,7 @@ allocation_policy:
   - zone_id: ru-central1-a
 load_balancer_spec:
   target_group_spec:
-    name: myTargetGroup
+    name: my-target-group
     description: "example target group"
 health_checks_spec:
   health_check_specs:
